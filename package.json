@@ -1,0 +1,15 @@
+{
+  "name": "pegn",
+  "version": "1.0.0",
+  "description": "PEGN Stack",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start:client": "cd client && yarn start",
+    "start:server": "cd server && yarn start",
+    "dev": "concurrently --raw --kill-others \"yarn run start:server\" \"yarn run start:client\" "
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1"
+  }
+}

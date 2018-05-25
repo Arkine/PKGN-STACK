@@ -1,0 +1,46 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon start.js --exec babel-node"
+  },
+  "dependencies": {
+    "apollo-boost": "^0.1.6",
+    "apollo-client": "^2.3.1",
+    "apollo-client-preset": "^1.0.8",
+    "apollo-errors": "^1.9.0",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "dotenv": "^5.0.1",
+    "koa": "^2.5.1",
+    "koa-graphql": "^0.7.5",
+    "koa-mount": "^3.0.0",
+    "koa-session-mongo": "^1.1.0",
+    "koa-session-store": "^2.0.0",
+    "mongoose": "^5.1.2",
+    "morgan": "^1.9.0",
+    "webpack": "^4.9.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-preact": "^1.1.0",
+    "babel-runtime": "^6.26.0",
+    "concurrently": "^3.5.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-loader": "^2.0.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "koa-webpack": "^4.0.0",
+    "nodemon": "^1.17.5"
+  }
+}
