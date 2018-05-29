@@ -10,6 +10,7 @@
     "dev": "concurrently --raw --kill-others \"yarn run start:server\" \"yarn run start:client\" "
   },
   "devDependencies": {
-    "concurrently": "^3.5.1"
+    "concurrently": "^3.5.1",
+    "file-loader": "^1.1.11"
   }
 }
