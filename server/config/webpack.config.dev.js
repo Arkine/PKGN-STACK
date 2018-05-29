@@ -32,6 +32,7 @@ export default {
 	devServer: {
 		contentBase: paths.appOutput,
 		historyApiFallback: true,
+		port: 8000,
 		hot: true,
 		inline: true,
 		progress: true

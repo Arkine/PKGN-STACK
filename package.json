@@ -13,5 +13,8 @@
     "concurrently": "^3.5.1",
     "file-loader": "^1.1.11",
     "webpack-node-externals": "^1.7.2"
+  },
+  "dependencies": {
+    "koa-static": "^4.0.3"
   }
 }

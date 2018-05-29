@@ -7,6 +7,7 @@ import Webpack from 'webpack';
 import session from 'koa-session-store';
 import paths from '../config/paths';
 import koaViews from 'koa-views';
+import serve from 'koa-static';
 import mongoStore from 'koa-session-mongo';
 import mongoose from 'mongoose';
 
@@ -56,11 +57,14 @@ app.use(middleware({
 app.use(cors());
 
 // HTTP request logger
-app.use(logger('dev'));
+// app.use(logger('dev'));
+
+app.use(serve(paths.appOutput));
+
 
 // Parses body data into JSON format
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
