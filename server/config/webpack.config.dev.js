@@ -2,6 +2,7 @@
 import paths from './paths';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import nodeExternals from 'webpack-node-externals';
 
 // Set the node environment variables
 process.env.BABEL_ENV = 'development';
@@ -16,7 +17,7 @@ export default {
 		],
 	},
 	target: 'node',
-	externals: [/node_modules/],
+	externals: [nodeExternals()],
 	output: {
 		publicPath:paths.appClient,
 		path: paths.appOutput,

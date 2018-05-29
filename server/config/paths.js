@@ -6,7 +6,7 @@ import path from 'path';
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 
-module.exports = {
+export default {
 	appClient: resolveApp('../client'),
 	appIndexJs: resolveApp('../client/index.js'),
 	appOutput: resolveApp('../client/public'),
