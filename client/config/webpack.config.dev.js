@@ -3,6 +3,7 @@ import paths from './paths';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import nodeExternals from 'webpack-node-externals';
+import WriteFilePlugin from 'write-file-webpack-plugin';
 
 // Set the node environment variables
 process.env.BABEL_ENV = 'development';
@@ -10,21 +11,22 @@ process.env.BABEL_ENV = 'development';
 export default {
 	mode: 'development',
 	devtool: 'cheap-module-source-map',
-	entry: {
-		index: [
-			'babel-polyfill',
-			paths.serverStart
-		],
-	},
+	entry: [
+		require.resolve('webpack/hot/dev-server'),
+		paths.appIndexJs
+	],
 	target: 'node',
 	externals: [nodeExternals()],
+	stats: {
+		colors: true,
+		chunks: false
+	},
 	output: {
-		publicPath:paths.appClient,
 		path: paths.appOutput,
 		filename: 'bundle.js'
 	},
 	resolve: {
-		// extensions: ['', '.js', '.jsx'],
+		extensions: ['.js', '.jsx'],
 		alias: {
 			app: paths.appSrc
 		},	
@@ -32,27 +34,25 @@ export default {
 	devServer: {
 		contentBase: paths.appOutput,
 		historyApiFallback: true,
-		port: 8000,
 		hot: true,
 		inline: true,
-		progress: true
+		progress: true,
+		color: true
 	},
 	module: {
 		rules: [
-			{
-				test: /\.html$/,
-				exclude: /node_modules/,
-				use: [{
-					loader: 'file-loader'
-				}]
-			},
+			// {
+			// 	test: /\.html$/,
+			// 	exclude: /node_modules/,
+			// 	use: [{
+			// 		loader: 'file-loader'
+			// 	}]
+			// },
 			{
 				test: /\.(js|jsx)$/,
 				include: paths.appSrc,
-				use: [{
-					loader: 'babel-loader',
-				}],
-				exclude: /node_modules/
+				exclude: /node_modules/, 
+				loader: 'babel-loader'
 			}
 		]
 	},
@@ -62,6 +62,7 @@ export default {
 		new HtmlWebpackPlugin({
 			inject: true,
 			template: paths.appHtml
-		})
+		}),
+		// new WriteFilePlugin()
 	]
 }

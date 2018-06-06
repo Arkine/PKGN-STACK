@@ -1,6 +1,6 @@
 import { h, render } from 'preact';
  
-render(
+const renderApp = render(
 	(
     <div id="foo">
         <span>Hello, world!</span>
@@ -9,3 +9,7 @@ render(
 	), 
 	document.getElementById('root')
 );
+
+if (module.hot) {
+	module.hot.accept('./', () => renderApp());
+}

@@ -1,21 +1,24 @@
 import Koa from 'koa';
 // import path from 'path';
-import cors from 'koa-cors';
-import logger from 'morgan';
-import bodyParser from 'body-parser';
-import Webpack from 'webpack';
-import session from 'koa-session-store';
 import paths from '../config/paths';
-import koaViews from 'koa-views';
 import serve from 'koa-static';
-import mongoStore from 'koa-session-mongo';
-import mongoose from 'mongoose';
+import cors from 'koa-cors';
+import Router from 'koa-router';
+// import logger from 'morgan';
+// import bodyParser from 'body-parser';
+// import Webpack from 'webpack';
+// import session from 'koa-session-store';
+// import koaViews from 'koa-views';
+// import mongoStore from 'koa-session-mongo';
+// import mongoose from 'mongoose';
 
-import middleware from 'koa-webpack';
-
-import webpackDevConfig from '../config/webpack.config.dev';
+import koaWebpack from 'koa-webpack';
+import Webpack from 'webpack';
+import webpackDevConfig from '../config/webpack.dev.babel';
 
 const isDev = process.env.NODE_ENV === 'development' ? true : false;
+
+console.log('isDev: ', isDev)
 
 // const MongoStore = connectMongo(session);
 
@@ -24,23 +27,34 @@ console.log('Starting app...');
 const app = new Koa();
 
 // Start our Webpack dev server
-// let webpackConfig;
-// if (isDev) {
-// 	webpackConfig = Object.create(webpackDevConfig);
-// }
+if (isDev) {
+	const compiler = Webpack(webpackDevConfig);
 
-const compiler = Webpack(webpackDevConfig);
+	app.use(koaWebpack({
+		compiler
+	}));
+}
 
-app.use(middleware({
-	compiler,
-	entry: [
-		'babel-polyfill',
-		paths.serverStart
-	],
-	dev: {
-		publicPath: paths.appOutput
-	}
-}));
+
+// Prevent Xorigin request errs
+app.use(cors());
+
+// HTTP request logger
+app.use(async (ctx, next) => {
+	const start = new Date();
+	await next();
+	const ms = new Date() - start;
+	console.log(`${ctx.method} ${ctx.url} - ${ms}`);
+});
+
+app.use(serve(paths.appOutput));
+	// .then((middleware) => {
+	// app.use(middleware);
+
+
+// app.use(middleware({
+	// compiler,
+// }));
 
 // app.use(session({
 // 	store: mongoStore.create({
@@ -59,13 +73,15 @@ app.use(cors());
 // HTTP request logger
 // app.use(logger('dev'));
 
-app.use(serve(paths.appOutput));
+const router = new Router();
+
+router.use('/', serve(paths.appOutput));
 
 
 // Parses body data into JSON format
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 
-
+	// });
 
 module.exports = app;
