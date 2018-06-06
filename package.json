@@ -7,7 +7,7 @@
   "scripts": {
     "start:client": "cd client && yarn dev",
     "start:server": "cd server && yarn start",
-    "dev": "concurrently --raw --kill-others \"yarn run start:server\" \"yarn run start:client\" "
+    "dev": "concurrently --raw --kill-others \"yarn run start:server\""
   },
   "devDependencies": {
     "babel-preset-preact": "^1.1.0",

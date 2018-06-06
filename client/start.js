@@ -1,20 +1,19 @@
 import Webpack from 'webpack';
-// import Koa from 'koa';
+import Koa from 'koa';
+import koaWebpack from 'koa-webpack';
+import WebpackDevServer from 'webpack-dev-server';
 
-// import middleware from 'koa-webpack';
-
-import webpackDevConfig from './config/webpack.config.dev';
+import webpackDevConfig from './config/webpack.dev.babel';
 
 const isDev = true;
-
-// Start our Webpack dev server
-let webpackConfig;
-if (isDev) {
-	webpackConfig = Object.create(webpackDevConfig);
-}
+// const app = new Koa();
 
 const compiler = Webpack(webpackDevConfig);
 
-app.use(middleware({
-	compiler,
-}));
+// app.use(WebpackDevServer(compiler));
+const app = new WebpackDevServer(compiler);
+app.listen(3000, () => {
+	console.clear();
+	console.log('Client listening on port 3000');
+});
+	

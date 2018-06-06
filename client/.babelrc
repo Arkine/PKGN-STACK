@@ -1,8 +1,9 @@
 {
-	"presets": [ "env" , "preact"],
+	"presets": [ "env", "preact"],
 	"plugins": [
-		// "transform-object-rest-spread",
-		// "transform-class-properties",
+		["transform-react-jsx",  { "pragma":"h" }],
+		"transform-object-rest-spread",
+		"transform-class-properties",
 		"transform-runtime"
 	]
 }

@@ -27,13 +27,13 @@ console.log('Starting app...');
 const app = new Koa();
 
 // Start our Webpack dev server
-if (isDev) {
-	const compiler = Webpack(webpackDevConfig);
+// if (isDev) {
+// 	const compiler = Webpack(webpackDevConfig);
 
-	app.use(koaWebpack({
-		compiler
-	}));
-}
+// 	app.use(koaWebpack({
+// 		compiler
+// 	}));
+// }
 
 
 // Prevent Xorigin request errs
