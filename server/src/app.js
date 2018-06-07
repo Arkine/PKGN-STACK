@@ -15,7 +15,7 @@ import schema from './api/rootSchema';
 
 const isDev = process.env.NODE_ENV === 'development' ? true : false;
 
-console.log('isDev: ', isDev)
+console.log('isDev: ', isDev);
 
 // const MongoStore = connectMongo(session);
 
@@ -34,6 +34,7 @@ app.use(async (ctx, next) => {
 	console.log(`${ctx.method} ${ctx.url} - ${ms}`);
 });
 
+// Serves our static html file
 app.use(serve(paths.appOutput));
 
 // app.use(session({
@@ -47,13 +48,17 @@ app.use(serve(paths.appOutput));
 // Prevent Xorigin request errs
 app.use(cors());
 
+// Create a new router for path handling
 const router = new Router();
 
-router.use('*', serve(paths.appOutput));
+// Parse req.body into JSON. Might have to move this to Graphql middleware
+app.use(koaBody());
 
+// Setup our Graphql server
 router.get(
 	'/graphql',
 	graphqlKoa((req, res) => {
+		// Bind user here so that the info is available on all reqs
 		return {
 			schema
 		}
@@ -62,26 +67,20 @@ router.get(
 
 router.post(
 	'/graphql',
-	koaBody(),
-	graphqlKoa((req, res) => {
-		return {
-			schema
-		}
-	})
+	graphqlKoa({ schema })
 );
 
-
+// Our in browser IDE for Graphql
 router.get(
 	'/graphiql',
 	graphiqlKoa({
 		endpointURL: '/graphql'
 	})
 );
-
+// Tell our app to use our routes
 app.use(router.routes());
+
+// Responds to OPTIONS requests with an Allow header
 app.use(router.allowedMethods());
-// Parses req.body data into JSON format
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
 
 module.exports = app;

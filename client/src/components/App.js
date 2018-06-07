@@ -1,8 +1,9 @@
-import { h, render, Component } from 'preact';
+import React from 'react';
+// import { h, Component } from 'preact';
 import Header from './Header';
 import Footer from './Footer';
 
-export default class App extends Component {
+export default class App extends React.Component {
 	render() {
 		return (
 			<div>

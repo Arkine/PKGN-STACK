@@ -1,10 +1,9 @@
-import { h, render } from 'preact';
-
+import React from 'react'; 
+import ReactDOM from 'react-dom';
+import Router from 'preact-router';
 import App from './components/App';
  
-
-const renderApp = render(
-	(
+const renderApp = ReactDOM.render((
 		<App />
 	), 
 	document.getElementById('root')
@@ -17,4 +16,4 @@ if (module.hot) {
 	});
 } 
 
-// renderApp();
+renderApp();

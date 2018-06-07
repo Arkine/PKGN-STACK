@@ -1,4 +1,5 @@
 import paths from './paths';
+import path from 'path';
 
 export default {
 	target: 'web',
@@ -11,7 +12,9 @@ export default {
 	resolve: {
 		extensions: ['.js', '.jsx'],
 		alias: {
-			app: paths.appSrc
+			app: paths.appSrc,
+			'react': 'preact-compat',
+			'react-dom': 'preact-compat'
 		},	
 	},
 
@@ -27,6 +30,10 @@ export default {
 			{
 				test: /\.(js|jsx)$/,
 				exclude: /node_modules/, 
+				include: [
+					paths.appSrc,
+					path.resolve('node_modules/preact-compat/src'),
+				],
 				use: [{
 					loader: 'babel-loader'
 				}]

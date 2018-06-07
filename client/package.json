@@ -6,11 +6,15 @@
   "dependencies": {
     "apollo-boost": "^0.1.7",
     "apollo-client": "^2.3.2",
-    "preact": "^8.2.9"
+    "preact": "^8.2.9",
+    "preact-compat": "^3.18.0",
+    "preact-router": "^2.6.1",
+    "react-dom": "^16.4.0",
+    "react-router": "^4.3.1"
   },
   "scripts": {
     "build": "webpack --config ./config/webpack.prod.babel.js",
-    "dev": "webpack-dev-server --config ./config/webpackDevServer.babel.js --open"
+    "dev": "webpack-dev-server --config ./config/webpackDevServer.babel.js"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

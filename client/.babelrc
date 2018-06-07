@@ -1,7 +1,7 @@
 {
 	"presets": [ "env", "preact"],
 	"plugins": [
-		["transform-react-jsx",  { "pragma":"h" }],
+		"transform-react-jsx",
 		"transform-object-rest-spread",
 		"transform-class-properties",
 		"transform-runtime"
