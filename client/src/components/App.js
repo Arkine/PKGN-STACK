@@ -2,6 +2,9 @@ import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
 
+import '../styles/lib/normalize.css';
+import '../styles/app.scss';
+
 export default class App extends React.Component {
 	render() {
 		return (
