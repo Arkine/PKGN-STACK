@@ -34,6 +34,25 @@ app.use(async (ctx, next) => {
 	console.log(`${ctx.method} ${ctx.url} - ${ms}`);
 });
 
+// Our middleware for handling 404
+app.use(async (ctx, next) => {
+	try {
+		await next();
+		const status = ctx.status || 404;
+
+		if (status === 404) {
+			await ctx.redirect('/');
+		}
+	} catch (error) {
+		ctx.status = error.status || 500;
+		if (ctx.status === 404) {
+			await ctx.redirect('/');
+		} else {
+			await ctx.redirect('/');
+		}
+	}
+})
+
 // Serves our static html file
 app.use(serve(paths.appOutput));
 

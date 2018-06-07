@@ -1,10 +1,12 @@
 import React from 'react';
 
+import PrimaryNavigation from '../components/navigation/PrimaryNav';
+
 export default class Header extends React.Component {
 	render() {
 		return (
 			<header>
-				<p>header stuff</p>
+				<PrimaryNavigation />
 			</header>
 		)
 	}
