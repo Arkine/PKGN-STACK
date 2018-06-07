@@ -4,8 +4,10 @@ import paths from '../config/paths';
 import serve from 'koa-static';
 import cors from 'koa-cors';
 import Router from 'koa-router';
+import koaBody from 'koa-bodyparser';
+import { graphqlKoa, graphiqlKoa} from 'apollo-server-koa';
+import schema from './api/rootSchema';
 // import bodyParser from 'body-parser';
-// import Webpack from 'webpack';
 // import session from 'koa-session-store';
 // import koaViews from 'koa-views';
 // import mongoStore from 'koa-session-mongo';
@@ -49,7 +51,36 @@ const router = new Router();
 
 router.use('*', serve(paths.appOutput));
 
-// Parses body data into JSON format
+router.get(
+	'/graphql',
+	graphqlKoa((req, res) => {
+		return {
+			schema
+		}
+	})
+);
+
+router.post(
+	'/graphql',
+	koaBody(),
+	graphqlKoa((req, res) => {
+		return {
+			schema
+		}
+	})
+);
+
+
+router.get(
+	'/graphiql',
+	graphiqlKoa({
+		endpointURL: '/graphql'
+	})
+);
+
+app.use(router.routes());
+app.use(router.allowedMethods());
+// Parses req.body data into JSON format
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 

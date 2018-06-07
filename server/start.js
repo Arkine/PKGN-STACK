@@ -21,6 +21,7 @@ mongoose.connection.on('error', err => {
 });
 
 // Import models here
+import './src/models/User';
 
 const app = require('./src/app');
 const server = app.listen(process.env.PORT || 8080, () => {
