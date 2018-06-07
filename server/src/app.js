@@ -47,13 +47,10 @@ app.use(cors());
 
 const router = new Router();
 
-router.use('/', serve(paths.appOutput));
-
+router.use('*', serve(paths.appOutput));
 
 // Parses body data into JSON format
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
-
-	// });
 
 module.exports = app;
