@@ -51,10 +51,11 @@ app.use(async (ctx, next) => {
 			await ctx.redirect('/');
 		}
 	}
-})
+});
 
 // Serves our static html file
 app.use(serve(paths.appOutput));
+
 
 // app.use(session({
 // 	store: mongoStore.create({
@@ -98,6 +99,9 @@ router.get(
 );
 // Tell our app to use our routes
 app.use(router.routes());
+
+// Catch all routes that didn't get caught
+// router.all("*", serve(paths.appOutput));
 
 // Responds to OPTIONS requests with an Allow header
 app.use(router.allowedMethods());

@@ -1,9 +1,11 @@
 import React from 'react';
 
-export default class LoginPage extends React.Component {
+export default class RegisterPage extends React.Component {
 	state = {
+		username: '',
 		email: '',
-		password: ''
+		password: '',
+		confirmPassword: ''
 	}
 	submitForm = async (e) => {
 		e.preventDefault();
@@ -15,6 +17,13 @@ export default class LoginPage extends React.Component {
 		return (
 			<div>
 				<form onSubmit={this.submitForm.bind(this)}>
+					<input
+						type="text"
+						value={this.state.username}
+						onChange={e => this.setState({username: e.target.value})}
+						name="username"
+						placeholder="Username"
+					/>
 					<input
 						type="email"
 						value={this.state.email}
@@ -28,6 +37,13 @@ export default class LoginPage extends React.Component {
 						onChange={e => this.setState({password: e.target.value})}
 						name="password"
 						placeholder="Password"
+					/>
+					<input
+						type="password"
+						value={this.state.confirmPassword}
+						onChange={e => this.setState({confirmPassword: e.target.value})}
+						name="confirmPassword"
+						placeholder="Confirm Password"
 					/>
 					<button className="button submit">Login</button>
 				</form>

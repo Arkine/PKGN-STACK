@@ -3,6 +3,7 @@ import Header from './Header';
 import Footer from './Footer';
 
 import '../styles/lib/normalize.css';
+import '../styles/lib/reset.css';
 import '../styles/app.scss';
 
 export default class App extends React.Component {
@@ -10,7 +11,9 @@ export default class App extends React.Component {
 		return (
 			<div>
 				<Header />
-					{this.props.children}
+					<main>
+						{this.props.children}
+					</main>
 				<Footer />
 			</div>
 		)

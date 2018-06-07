@@ -1,0 +1,15 @@
+@import '../../variables.scss';
+.PrimaryNavigation {
+	display: flex;
+	justify-content: flex-end;
+	background-color: $color-primary;
+
+	&__links {
+		max-width: $rowWidth;
+
+		a {
+			display: inline-block;
+			padding: 1rem;
+		}
+	}
+}
