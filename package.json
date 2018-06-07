@@ -7,18 +7,10 @@
   "scripts": {
     "start:client": "cd client && yarn dev",
     "start:server": "cd server && yarn start",
-    "dev": "concurrently --raw --kill-others \"yarn run start:server\""
+    "dev": "concurrently --raw --kill-others \"yarn run start:server\" \"yarn run start:client\""
   },
   "devDependencies": {
-    "babel-preset-preact": "^1.1.0",
-    "concurrently": "^3.5.1",
-    "koa-webpack": "^5.0.2",
-    "nodemon": "^1.17.5",
-    "webpack-merge": "^4.1.2",
-    "write-file-webpack-plugin": "^4.3.2"
+    "concurrently": "^3.5.1"
   },
-  "dependencies": {
-    "koa-router": "^7.4.0",
-    "koa-static": "^4.0.3"
-  }
+  "dependencies": {}
 }

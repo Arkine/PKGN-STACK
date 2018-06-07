@@ -21,6 +21,7 @@ export default merge(common, {
 	// stats: "errors-only",
 	devtool: 'cheap-module-source-map',
 	plugins: [
+		new CleanWebpackPlugin(),
 		new HtmlWebpackPlugin({
 			template: paths.appHtml,
 			alwaysWriteToDisk: false

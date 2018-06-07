@@ -11,7 +11,6 @@ const renderApp = render(
 );
 
 if (module.hot) {
-	console.log('its hot');
 	module.hot.accept('./', () =>{
 		console.log('reloading app...')
 		return renderApp();	

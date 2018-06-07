@@ -1,8 +1,4 @@
 import paths from './paths';
-import webpack from 'webpack';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import nodeExternals from 'webpack-node-externals';
-import WriteFilePlugin from 'write-file-webpack-plugin';
 
 export default {
 	target: 'web',
