@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "webpack --config ./config/webpack.prod.babel.js",
-    "dev": "nodemon start.js --exec babel-node"
+    "dev": "webpack-dev-server --config ./config/webpackDevServer.babel.js --open"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -25,6 +25,7 @@
     "babel-runtime": "^6.26.0",
     "clean-webpack-plugin": "^0.1.19",
     "concurrently": "^3.5.1",
+    "html-webpack-harddisk-plugin": "^0.2.0",
     "html-webpack-plugin": "^3.2.0",
     "koa-webpack": "^5.0.2",
     "webpack": "^4.11.1",

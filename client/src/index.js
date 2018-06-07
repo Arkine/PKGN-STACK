@@ -11,7 +11,11 @@ const renderApp = render(
 );
 
 if (module.hot) {
-	module.hot.accept('./', () => renderApp());
+	console.log('its hot');
+	module.hot.accept('./', () =>{
+		console.log('reloading app...')
+		return renderApp();	
+	});
 } 
 
 // renderApp();

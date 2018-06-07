@@ -4,9 +4,6 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import nodeExternals from 'webpack-node-externals';
 import WriteFilePlugin from 'write-file-webpack-plugin';
 
-// Set the node environment variables
-process.env.BABEL_ENV = 'development';
-
 export default {
 	target: 'web',
 	output: {
@@ -14,6 +11,7 @@ export default {
 		path: paths.appOutput,
 		filename: 'bundle.js'
 	},
+	// externals: [nodeExternals()],
 	resolve: {
 		extensions: ['.js', '.jsx'],
 		alias: {
