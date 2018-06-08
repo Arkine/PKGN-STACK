@@ -1,25 +1,29 @@
 import Koa from 'koa';
-// import path from 'path';
 import paths from '../config/paths';
 import serve from 'koa-static';
 import cors from 'koa-cors';
 import Router from 'koa-router';
-import koaBody from 'koa-bodyparser';
-import { graphqlKoa, graphiqlKoa} from 'apollo-server-koa';
+import bodyParser from 'koa-bodyparser';
 import schema from './api/rootSchema';
+import passport from 'koa-passport';
+// import session from 'koa-session';
+import session from 'koa-session-store';
+import mongoStore from 'koa-session-mongo';
+import { graphqlKoa, graphiqlKoa} from 'apollo-server-koa';
+import './services/passport';
+import authMiddleware from './services/auth';
+import jwt from 'koa-jwt';
+
+// import authMiddleware from './services/auth';
 // import bodyParser from 'body-parser';
-// import session from 'koa-session-store';
 // import koaViews from 'koa-views';
-// import mongoStore from 'koa-session-mongo';
 // import mongoose from 'mongoose';
 
 const isDev = process.env.NODE_ENV === 'development' ? true : false;
 
 console.log('isDev: ', isDev);
 
-// const MongoStore = connectMongo(session);
-
-console.log('Starting app...');
+console.log('Starting server...');
 
 const app = new Koa();
 
@@ -45,49 +49,78 @@ app.use(async (ctx, next) => {
 		}
 	} catch (error) {
 		ctx.status = error.status || 500;
-		if (ctx.status === 404) {
-			await ctx.redirect('/');
-		} else {
-			await ctx.redirect('/');
-		}
+		await ctx.redirect('/');
+		// if (ctx.status === 404) {
+		// } else {
+		// 	await ctx.redirect('/');
+		// }
 	}
 });
-
-// Serves our static html file
-app.use(serve(paths.appOutput));
-
-
-// app.use(session({
-// 	store: mongoStore.create({
-// 		host: 'mongodb',
-// 		db: 'overwatch',
-// 		mongoose: mongoose.connection
-// 	})
-// }))
 
 // Prevent Xorigin request errs
 app.use(cors());
 
+// Parse req.body into JSON. Might have to move this to Graphql middleware
+app.use(bodyParser());
+
+// Set our session keys
+app.use(session({
+	secret: process.env.SECRET,
+	resave: false,
+	saveUninitialized: false,
+	store: mongoStore.create({
+		url: process.env.DATABASE
+	})
+	
+}, app));
+
+// Passport authentication
+app.use(passport.initialize());
+app.use(passport.session());
+
+// app.use(jwt({ secret: process.env.SECRET }));
 // Create a new router for path handling
 const router = new Router();
 
-// Parse req.body into JSON. Might have to move this to Graphql middleware
-app.use(koaBody());
+// router.post('/login', passport.authenticate('local', {
+//   successRedirect: '/',
+//   failureRedirect: '/login',
+//   failureFlash: true
+// }));
 
 // Setup our Graphql server
 router.get(
 	'/graphql',
-	graphqlKoa((req, res) => {
-		// Bind user here so that the info is available on all reqs
+	graphqlKoa((ctx, next) => {
+		
+		let context = {
+			login: ctx.login.bind(ctx),
+			user: ctx.state.user
+		}
+
 		return {
-			schema
+			schema,
+			context
 		}
 	})
 );
 
 router.post(
 	'/graphql',
-	graphqlKoa({ schema })
+	authMiddleware,
+	graphqlKoa((ctx, next) => {
+	
+		let context = {
+			login: ctx.login.bind(ctx),
+			user: ctx.state.user,
+			ctx
+		}
+
+		return {
+			schema,
+			context
+		}
+	})
 );
 
 // Our in browser IDE for Graphql
@@ -97,13 +130,15 @@ router.get(
 		endpointURL: '/graphql'
 	})
 );
+
+
 // Tell our app to use our routes
 app.use(router.routes());
 
-// Catch all routes that didn't get caught
-// router.all("*", serve(paths.appOutput));
-
 // Responds to OPTIONS requests with an Allow header
 app.use(router.allowedMethods());
+
+// Serves our static html file
+app.use(serve(paths.appOutput));
 
 module.exports = app;
