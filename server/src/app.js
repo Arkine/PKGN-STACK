@@ -63,20 +63,25 @@ app.use(cors());
 // Parse req.body into JSON. Might have to move this to Graphql middleware
 app.use(bodyParser());
 
+// app.use((ctx, next) => {
+// 	console.log('request', ctx.request.body);
+// 	next();
+// })
+
 // Set our session keys
-app.use(session({
-	secret: process.env.SECRET,
-	resave: false,
-	saveUninitialized: false,
-	store: mongoStore.create({
-		url: process.env.DATABASE
-	})
+// app.use(session({
+// 	secret: process.env.SECRET,
+// 	resave: false,
+// 	saveUninitialized: false,
+// 	store: mongoStore.create({
+// 		url: process.env.DATABASE
+// 	})
 	
-}, app));
+// }, app));
 
 // Passport authentication
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 
 // app.use(jwt({ secret: process.env.SECRET }));
 // Create a new router for path handling

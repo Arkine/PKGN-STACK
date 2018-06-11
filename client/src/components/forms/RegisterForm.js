@@ -1,21 +1,60 @@
 import React from 'react';
+import { graphql } from 'react-apollo';
+import { Redirect } from 'react-router';
 
-export default class RegisterForm extends React.Component {
+import REGISTER_QUERY from '../../queries/register';
+
+class RegisterForm extends React.Component {
 	state = {
 		username: '',
 		email: '',
 		password: '',
-		confirmPassword: ''
+		confirmPassword: '',
+		error: ''
 	}
 	submitForm = async (e) => {
 		e.preventDefault();
+		try {
+			const response = await this.props.registerUserMutation({
+				variables: {
+					username: this.state.username,
+					email: this.state.email,
+					password: this.state.password,
+					confirmPassword: this.state.confirmPassword
+				}
+			});
 
-		// try {}
+			const { user, error } = response.data.register;
+			
+			if (error) {
+				this.setState({
+					error: error.message
+				});
+				return false;
+			}
+
+			if (user) {
+				console.log('redirecting home'); 
+				// redirect home
+				this.context.history.push('/login');
+			}
+
+		} catch(error) {
+			this.setState({
+				error: error.message
+			});
+		}
+
+	
 	}
 
 	render() {
+		// console.log(typeof this.state.error);
 		return (
 			<div>
+				{this.state.error && 
+					<span className="error">{this.state.error}</span>
+				}
 				<form onSubmit={this.submitForm.bind(this)}>
 					<input
 						type="text"
@@ -51,3 +90,7 @@ export default class RegisterForm extends React.Component {
 		);
 	}
 }
+
+export default graphql(REGISTER_QUERY, {
+	name: 'registerUserMutation'
+})(RegisterForm);

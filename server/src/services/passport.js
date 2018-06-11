@@ -5,10 +5,13 @@ import { Strategy as JWTStrategy, ExtractJwt as ExtractJWT } from 'passport-jwt'
 
 const User = mongoose.model('User');
 
-// console.log('localstrat:', LocalStrategy);
-passport.use('local', new LocalStrategy({
-	usernameField: 'email'
-}, async (email, password, done) => {
+const options = {
+	usernameField: 'email',
+	passwordField: 'password',
+	passReqToCallback: true
+};
+
+passport.use('local', new LocalStrategy(options, async (email, password, done) => {
 	console.log('trying stuff');
 	try {
 		const user = await User.findOne({ email });
@@ -17,6 +20,7 @@ passport.use('local', new LocalStrategy({
 		if (!user) {
 			return done(null, false);
 		}
+		
 		if (password === user.password) {
 			return(null, user);
 		}
@@ -41,10 +45,16 @@ passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser(async (id, done) => {
 	try {
 		const user = await User.findById(id)
-
-		done(null, user);
+		console.log('user', user);
+		return done(null, user);
 	} catch (error) {
-		done(error);
-
+		return done(error);
 	}
 });
+// passport.serializeUser(function(user, done) {
+//   done(null, user);
+// });
+
+// passport.deserializeUser(function(user, done) {
+//   done(null, user);
+// });

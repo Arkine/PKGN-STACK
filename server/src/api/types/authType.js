@@ -18,7 +18,7 @@ export default new GraphQLObjectType({
 		user: {
 			type: userType
 		},
-		errors: {
+		error: {
 			type: GraphQLString
 		}
 	}

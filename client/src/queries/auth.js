@@ -5,9 +5,9 @@ export default gql`
 		auth(email: $email, password: $password) {
 			authToken,
 			refreshToken,
-			errors,
+			error,
 			user {
-				id,
+				_id,
 				email
 			}
 		}
