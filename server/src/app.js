@@ -10,9 +10,9 @@ import passport from 'koa-passport';
 import session from 'koa-session-store';
 import mongoStore from 'koa-session-mongo';
 import { graphqlKoa, graphiqlKoa} from 'apollo-server-koa';
-import './services/passport';
+
 import authMiddleware from './services/auth';
-import jwt from 'koa-jwt';
+// import jwt from 'koa-jwt';
 
 // import authMiddleware from './services/auth';
 // import bodyParser from 'body-parser';
@@ -81,17 +81,14 @@ app.use(bodyParser());
 
 // Passport authentication
 app.use(passport.initialize());
+import './services/passport';
+
+app.use(authMiddleware);
+
 // app.use(passport.session());
 
-// app.use(jwt({ secret: process.env.SECRET }));
 // Create a new router for path handling
 const router = new Router();
-
-// router.post('/login', passport.authenticate('local', {
-//   successRedirect: '/',
-//   failureRedirect: '/login',
-//   failureFlash: true
-// }));
 
 // Setup our Graphql server
 router.get(
@@ -100,7 +97,7 @@ router.get(
 		
 		let context = {
 			login: ctx.login.bind(ctx),
-			user: ctx.state.user
+			user: ctx.req.user
 		}
 
 		return {
@@ -112,7 +109,6 @@ router.get(
 
 router.post(
 	'/graphql',
-	authMiddleware,
 	graphqlKoa((ctx, next) => {
 	
 		let context = {

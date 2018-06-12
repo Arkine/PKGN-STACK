@@ -14,11 +14,11 @@ const UserSchema = new Schema({
 		trim: true,
 		validate: {
 			isAsync: true,
-			validator: (email, cb) =>
+			validator: (email, cb) => 
 				cb(validator.isEmail(email), `${email} is not a valid email address`)
 		},
 		required: 'Please Supply an email address'
-	},
+	}
 });
 
 // Adds our methods for validation to simplify it

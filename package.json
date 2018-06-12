@@ -12,7 +12,5 @@
   "devDependencies": {
     "concurrently": "^3.5.1"
   },
-  "dependencies": {
-    "koa-jwt": "^3.3.2"
-  }
+  "dependencies": {}
 }

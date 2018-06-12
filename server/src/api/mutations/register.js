@@ -46,7 +46,6 @@ export default {
 
 			return {
 				token,
-				refreshToken: '1234',
 				user
 			}
 		} catch(error) {

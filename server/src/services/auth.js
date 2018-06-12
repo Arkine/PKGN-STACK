@@ -1,24 +1,32 @@
 import jwt from 'jsonwebtoken';
 import passport from 'koa-passport';
+import mongoose from 'mongoose';
+
+const User = mongoose.model('User');
 
 export default (ctx, next) => {
-	const { email, password } = ctx.request.body.variables;
+	if (!ctx.req.headers.authorization) {
+		return next('No Auth header present');
+	}
 
-	console.log(email, password)
-	return passport.authenticate('local', {session: false}, (err, user, info) => {
-		console.log('here', user)
-		if (err || !user) {
-			return next(err, user);
+	const token = ctx.req.headers.authorization.split(' ')[1];
+
+	return jwt.verify(token, process.env.SECRET, async (err, payload) => {
+		if (err) {
+			return next(err);
 		}
 
-		ctx.req.login(user, err => {
-			if (err) {
-				return next(err);
-			}
-		});
+		console.log('made it here');
 
-		// Generate a signed token with the contents of the user object
-		const token = jwt.sign(user, process.env.SECRET);
-		return next(null, user);
-	})(ctx);
+		const userId = payload.sub;
+		try {
+			const newUser = await User.findById(userId);
+
+			ctx.req.user = newUser;
+
+			return next();
+		} catch(error) {
+			return next(error);
+		}
+	});
 }

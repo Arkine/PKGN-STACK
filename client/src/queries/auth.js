@@ -7,7 +7,7 @@ export default gql`
 			refreshToken,
 			error,
 			user {
-				_id,
+				id,
 				email
 			}
 		}

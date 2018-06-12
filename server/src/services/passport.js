@@ -1,60 +1,56 @@
 import passport from 'koa-passport';
 import mongoose from 'mongoose';
 import { Strategy as LocalStrategy } from 'passport-local';
-import { Strategy as JWTStrategy, ExtractJwt as ExtractJWT } from 'passport-jwt';
+// import { Strategy as JWTStrategy, ExtractJwt as ExtractJWT } from 'passport-jwt';
 
 const User = mongoose.model('User');
 
 const options = {
 	usernameField: 'email',
 	passwordField: 'password',
-	passReqToCallback: true
+	session: false
 };
 
-passport.use('local', new LocalStrategy(options, async (email, password, done) => {
+passport.use('local-login', new LocalStrategy(options, async (email, password, done) => {
 	console.log('trying stuff');
 	try {
 		const user = await User.findOne({ email });
 		console.log('User:', user);
 		
 		if (!user) {
-			return done(null, false);
+			return done('Incorrect username or password', false);
 		}
 		
-		if (password === user.password) {
-			return(null, user);
+		if (password !== user.password) {
+			return done('Incorrect username or password');
 		}
 
-		return done(null, false);
+		const payload = {
+			sub: user._id
+		};
+		const token = jwt.sign(payload, process.env.SECRET);
+		const data  = {
+			user
+		};
+
+		return done(null, user, payload, data);
 	} catch(error) {
 		return done(error);
 	}
 }));
 
-// passport.use('jwt', new JWTStrategy({
-// 	jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-// 	secretOrKey: process.env.SECRET
-// }, (jwtPayload, cb) => {
-// 	//Get user here if needed JWT should have user data
-// 	console.log('got to JWT strat');
-// }))
-
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
-passport.serializeUser((user, done) => done(null, user.id));
-passport.deserializeUser(async (id, done) => {
+passport.use('local-signup', new LocalStrategy(options, async (email, password, done) => {
+	console.log('trying stuff');
 	try {
-		const user = await User.findById(id)
-		console.log('user', user);
+		const user = new User({
+			email,
+			password
+		});
+
+		await new user.save();
+
 		return done(null, user);
-	} catch (error) {
+	} catch(error) {
 		return done(error);
 	}
-});
-// passport.serializeUser(function(user, done) {
-//   done(null, user);
-// });
-
-// passport.deserializeUser(function(user, done) {
-//   done(null, user);
-// });
+}));
