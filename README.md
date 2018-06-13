@@ -37,11 +37,11 @@ Server configuration is separated for both Client and Server.
 
 ### To edit server config
 The server config file is located in the ```/server/config/``` folder.
-- Paths.js: Used to load file paths to the dev-server
-- variables.env: Your environment variables file
+- **Paths.js**: Used to load file paths to the dev-server
+- **variables.env**: Your environment variables file
 
 ### To edit client config
 The client config file is located in the ```/client/config/``` folder.
-- Paths.js: Used to load file paths to the server
-- variables.env: Your environment variables file
+- **Paths.js**: Used to load file paths to the server
+- **variables.env**: Your environment variables file
 
