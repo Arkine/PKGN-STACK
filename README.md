@@ -15,7 +15,7 @@ The project utilizes the following packages (some packages not included):
 - Passport
 - Babel
 
-# Installation
+## Installation
 
 1. Clone the repository
 2. ```$ cd PKGN-STACK ```
