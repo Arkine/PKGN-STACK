@@ -46,7 +46,7 @@ class LoginForm extends React.Component {
 				{this.state.error && 
 					<span className="error">{this.state.error}</span>
 				}
-				<form onSubmit={this.submitForm.bind(this)} enctype="multipart/form-data">
+				<form onSubmit={this.submitForm.bind(this)}>
 					<input
 						type="email"
 						value={this.state.email}

@@ -12,6 +12,7 @@ class RegisterForm extends React.Component {
 		confirmPassword: '',
 		error: ''
 	}
+
 	submitForm = async (e) => {
 		e.preventDefault();
 		try {
@@ -33,17 +34,13 @@ class RegisterForm extends React.Component {
 				return false;
 			}
 
-			if (user) {
-				console.log('history', this.props.history);
-				console.log('redirecting home', user); 
-				// redirect home
+			if (user) {				
+				// redirect to login
 				this.props.history.push('/login');
 			}
 
 		} catch(error) {
-			this.setState({
-				error: error.message
-			});
+			this.setState({error: error.graphQLErrors[0].message});
 		}
 
 	
@@ -85,7 +82,7 @@ class RegisterForm extends React.Component {
 						name="confirmPassword"
 						placeholder="Confirm Password"
 					/>
-					<button className="button submit">Login</button>
+					<button className="button submit">Register</button>
 				</form>
 			</div>
 		);

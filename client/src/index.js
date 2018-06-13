@@ -37,7 +37,7 @@ const client = new ApolloClient({
 
 // Props to be passed to router for auth context
 const childProps = {
-	isAuthenticated: Auth.isUserAuthenticated()
+	isAuthenticated: Auth.isUserAuthenticated
 }
  
 const renderApp = () => ReactDOM.render((
