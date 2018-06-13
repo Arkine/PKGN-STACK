@@ -14,4 +14,4 @@ export default new GraphQLSchema({
 		user,
 		auth
 	]
-})
+});

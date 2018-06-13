@@ -35,7 +35,9 @@ export default {
 			
 			// Sign the token with the user ID
 			const authToken = jwt.sign({
-				sub: user._id
+				sub: user._id,
+				iat: Math.floor(Date.now() / 1000), // Issued at time,
+				exp: Math.floor(Date.now() / 1000) * (60 * 60) // expire in 1 hr
 			}, process.env.SECRET);
 
 			// Log the user in

@@ -20,9 +20,9 @@ const history = createHistory();
 // });
 
 // Create the client link (should point to Graphql server)
-// Connect JWT to every request
 const client = new ApolloClient({
 	uri: 'http://localhost:8080/graphql',
+	// Set the Auth token on every request
 	request: async (operation) => {
 		
 		let token = await localStorage.getItem('app-authToken');
