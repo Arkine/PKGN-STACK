@@ -21,8 +21,8 @@ const client = new ApolloClient({
 	// Set the Auth token on every request
 	request: async (operation) => {
 		
-		let token = await localStorage.getItem('app-authToken');
-
+		const token = await localStorage.getItem('app-authToken');
+	
 		operation.setContext({
 			headers: {
 				'Authorization': 'Bearer ' + token
