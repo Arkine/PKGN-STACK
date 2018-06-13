@@ -25,7 +25,7 @@ const UserSchema = new Schema({
 UserSchema.plugin(passportLocalMongoose, {
 	usernameField: 'email',
 	errorMessages: {
-		UserExistsError: 'That Email Already Exists'
+		UserExistsError: 'That Email Already Exists' // Error returned if email is already registered
 	}
 });
 

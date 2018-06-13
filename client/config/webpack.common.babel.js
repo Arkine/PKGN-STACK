@@ -8,7 +8,6 @@ export default {
 		path: paths.appOutput,
 		filename: 'bundle.js'
 	},
-	// externals: [nodeExternals()],
 	resolve: {
 		extensions: ['.js', '.jsx'],
 		alias: {
@@ -20,13 +19,7 @@ export default {
 
 	module: {
 		rules: [
-			// {
-			// 	test: /\.html$/,
-			// 	exclude: /node_modules/,
-			// 	use: [{
-			// 		loader: 'file-loader'
-			// 	}]
-			// },
+			// Loader for our scss files
 			{
 				test: /\.scss$/,
 				use: [
@@ -35,6 +28,7 @@ export default {
 					"sass-loader"
 				]
 			},
+			// Loader for css files
 			{
 				test: /\.css$/,
 				use: [
@@ -42,11 +36,13 @@ export default {
 					"css-loader"
 				]
 			},
+			// Our babel loader for our es6 files
 			{
 				test: /\.(js|jsx)$/,
 				exclude: /node_modules/, 
 				include: [
 					paths.appSrc,
+					// Allows us to use react tools and syntax with preact
 					path.resolve('node_modules/preact-compat/src'),
 				],
 				use: [{

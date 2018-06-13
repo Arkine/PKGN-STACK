@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 
 const User = mongoose.model('User');
 
+// Authorizes user on every request
 export default (ctx, next) => {
 	// Check for the presence of the auth header
 	if (!ctx.req.headers.authorization) {
@@ -17,13 +18,14 @@ export default (ctx, next) => {
 		if (err) {
 			return next(err);
 		}
-		const userId = payload.sub;
 		
 		// Attach the user to the request body
+		const userId = payload.sub;
 		try {
 			const newUser = await User.findById(userId);
 
-			ctx.req.user = newUser;
+			// Set the user on the request object
+			ctx.req.user = newUser; 
 
 			return next();
 		} catch(error) {

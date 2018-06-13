@@ -14,21 +14,22 @@ export default merge(common, {
 	entry: [
 		require.resolve('webpack/hot/dev-server'),
 		'webpack-dev-server/client?http://localhost:3000/',
-		// require.resolve('webpack-hot-client/client'),
 		paths.appIndexJs
 	],
-	// watch: true,
-	// stats: "errors-only",
 	devtool: 'cheap-module-source-map',
 	plugins: [
+		// Cleans out the public folder before a new build
 		new CleanWebpackPlugin(),
+		// Creates the index.html file
 		new HtmlWebpackPlugin({
 			template: paths.appHtml,
 			alwaysWriteToDisk: false
 		}),
+		// Emits a index.html on rebuild
 		new HtmlWebpackHarddiskPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new webpack.NamedModulesPlugin(),
+		// Enable Hot module reloading
 		new webpack.HotModuleReplacementPlugin(),
 		
 	]

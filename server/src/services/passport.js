@@ -10,11 +10,10 @@ const options = {
 	passwordField: 'password'
 };
 
+// Strategy used when a user logs in
 passport.use('local-login', new LocalStrategy(options, async (email, password, done) => {
-	console.log('trying stuff');
 	try {
 		const user = await User.findOne({ email });
-		console.log('User:', user);
 		
 		if (!user) {
 			return done('Incorrect username or password', false);
@@ -25,8 +24,10 @@ passport.use('local-login', new LocalStrategy(options, async (email, password, d
 		}
 
 		const payload = {
-			sub: user._id
+			sub: user._id,
+			exp: Math.floor(Date.now() * 1000) * (60 * 60) // 1 hr
 		};
+		
 		const token = jwt.sign(payload, process.env.SECRET);
 		const data  = {
 			user

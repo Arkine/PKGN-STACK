@@ -6,18 +6,13 @@ import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
 import schema from './api/rootSchema';
 import passport from 'koa-passport';
-// import session from 'koa-session';
 import session from 'koa-session-store';
 import mongoStore from 'koa-session-mongo';
 import { graphqlKoa, graphiqlKoa} from 'apollo-server-koa';
 
-import authMiddleware from './services/auth';
-// import jwt from 'koa-jwt';
-
-// import authMiddleware from './services/auth';
-// import bodyParser from 'body-parser';
-// import koaViews from 'koa-views';
-// import mongoose from 'mongoose';
+import authMiddleware from './middleware/auth';
+import logger from './middleware/logger';
+import redirectHandler from './middleware/redirectHandler';
 
 const isDev = process.env.NODE_ENV === 'development' ? true : false;
 
@@ -31,31 +26,10 @@ const app = new Koa();
 app.use(cors());
 
 // HTTP request logger
-app.use(async (ctx, next) => {
-	const start = new Date();
-	await next();
-	const ms = new Date() - start;
-	console.log(`${ctx.method} ${ctx.url} - ${ms}`);
-});
+app.use(logger);
 
 // Our middleware for handling 404
-app.use(async (ctx, next) => {
-	try {
-		await next();
-		const status = ctx.status || 404;
-
-		if (status === 404) {
-			await ctx.redirect('/');
-		}
-	} catch (error) {
-		ctx.status = error.status || 500;
-		await ctx.redirect('/');
-		// if (ctx.status === 404) {
-		// } else {
-		// 	await ctx.redirect('/');
-		// }
-	}
-});
+app.use(redirectHandler);
 
 // Prevent Xorigin request errs
 app.use(cors());
@@ -63,29 +37,12 @@ app.use(cors());
 // Parse req.body into JSON. Might have to move this to Graphql middleware
 app.use(bodyParser());
 
-// app.use((ctx, next) => {
-// 	console.log('request', ctx.request.body);
-// 	next();
-// })
-
-// Set our session keys
-// app.use(session({
-// 	secret: process.env.SECRET,
-// 	resave: false,
-// 	saveUninitialized: false,
-// 	store: mongoStore.create({
-// 		url: process.env.DATABASE
-// 	})
-	
-// }, app));
-
 // Passport authentication
 app.use(passport.initialize());
 import './services/passport';
 
+// Our authentication middleware for adding user to req.body
 app.use(authMiddleware);
-
-// app.use(passport.session());
 
 // Create a new router for path handling
 const router = new Router();
