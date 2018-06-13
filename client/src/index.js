@@ -15,10 +15,6 @@ import Routes from './router/routes';
 // History API used for routing
 const history = createHistory();
 
-// const setAuthHeaders = setContext((request, previousContext) => {
-// 	headers: authHeader()
-// });
-
 // Create the client link (should point to Graphql server)
 const client = new ApolloClient({
 	uri: 'http://localhost:8080/graphql',
