@@ -1,15 +1,16 @@
 import React from 'react'; 
 import ReactDOM from 'react-dom';
-import { Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import { setContext } from 'apollo-link-context';
 
-import App from './components/App';
-import authHeader from './helpers/auth-header';
-
-import Routes from './router/routes';
 import createHistory from 'history/createBrowserHistory';
+
+import Auth from './helpers/auth';
+
+import App from './components/App';
+import Routes from './router/routes';
 
 // History API used for routing
 const history = createHistory();
@@ -23,6 +24,7 @@ const history = createHistory();
 const client = new ApolloClient({
 	uri: 'http://localhost:8080/graphql',
 	request: async (operation) => {
+		
 		let token = await localStorage.getItem('app-authToken');
 
 		operation.setContext({
@@ -32,14 +34,19 @@ const client = new ApolloClient({
 		})
 	}
 });
+
+// Props to be passed to router for auth context
+const childProps = {
+	isAuthenticated: Auth.isUserAuthenticated()
+}
  
 const renderApp = () => ReactDOM.render((
 		<ApolloProvider client={client}>
-			<Router history={history}>
+			<BrowserRouter>
 				<App>
-					<Routes />
+					<Routes childProps={childProps}/>
 				</App>
-			</Router>
+			</BrowserRouter>
 		</ApolloProvider>
 	), 
 	document.getElementById('root')

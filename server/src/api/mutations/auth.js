@@ -21,8 +21,9 @@ export default {
 		}
 	},
 	resolve: async (root, {email, password}, { login, ctx }, info) => {
-
+		console.log('authenticating...');
 		try {
+			// Check if the user passes authentication
 			const resp = await User.authenticate()(email, password);
 			const { user, error } = resp;
 
@@ -32,11 +33,12 @@ export default {
 				}
 			}
 			
+			// Sign the token with the user ID
 			const authToken = jwt.sign({
 				sub: user._id
 			}, process.env.SECRET);
 
-			
+			// Log the user in
 			login(user);
 			
 			return {

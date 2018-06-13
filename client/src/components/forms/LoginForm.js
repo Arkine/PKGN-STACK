@@ -3,6 +3,8 @@ import { graphql } from 'react-apollo';
 
 import LOGIN_QUERY from '../../queries/auth';
 
+import Auth from '../../helpers/auth';
+
 class LoginForm extends React.Component {
 	state = {
 		email: '',
@@ -22,11 +24,13 @@ class LoginForm extends React.Component {
 			});
 
 			const { user, authToken } = resp.data.auth;
-			console.log(resp);
+
 			if (user) {
 				// store the returned token in local Storage
-				window.localStorage.setItem('app-authToken', authToken);
-				// window.location = '/';
+				Auth.authenticateUser(authToken);
+				
+				// Redirect to home page
+				this.props.history.push('/');
 			}
 
 			

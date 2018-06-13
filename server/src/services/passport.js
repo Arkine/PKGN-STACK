@@ -7,8 +7,7 @@ const User = mongoose.model('User');
 
 const options = {
 	usernameField: 'email',
-	passwordField: 'password',
-	session: false
+	passwordField: 'password'
 };
 
 passport.use('local-login', new LocalStrategy(options, async (email, password, done) => {
@@ -40,7 +39,6 @@ passport.use('local-login', new LocalStrategy(options, async (email, password, d
 }));
 
 passport.use('local-signup', new LocalStrategy(options, async (email, password, done) => {
-	console.log('trying stuff');
 	try {
 		const user = new User({
 			email,

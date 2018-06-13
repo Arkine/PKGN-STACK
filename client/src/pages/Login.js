@@ -7,7 +7,7 @@ export default class LoginPage extends React.Component {
 		return (
 			<div>
 				<h1>Login</h1>
-				<LoginForm />
+				<LoginForm {...this.props} />
 			</div>
 		);
 	}

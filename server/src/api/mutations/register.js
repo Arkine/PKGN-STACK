@@ -38,11 +38,15 @@ export default {
 			email,
 			username
 		});
-
+		// Try to register new user
 		try {
 	
 			await User.register(user, password);
-			const token = jwt.sign(user.toJSON(), process.env.SECRET);
+			
+			// Return a signed token
+			const token = jwt.sign({
+				sub: user._id
+			}, process.env.SECRET);
 
 			return {
 				token,

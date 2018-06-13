@@ -34,10 +34,10 @@ class RegisterForm extends React.Component {
 			}
 
 			if (user) {
-				
+				console.log('history', this.props.history);
 				console.log('redirecting home', user); 
 				// redirect home
-				// this.context.history.push('/login');
+				this.props.history.push('/login');
 			}
 
 		} catch(error) {
