@@ -12,5 +12,8 @@
   "devDependencies": {
     "concurrently": "^3.5.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "apollo-link-context": "^1.0.8",
+    "graphql": "^0.13.2"
+  }
 }

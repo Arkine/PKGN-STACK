@@ -3,11 +3,11 @@ import path from 'path';
 
 export default {
 	target: 'web',
-	output: {
-		publicPath: paths.appOutput,
-		path: paths.appOutput,
-		filename: 'bundle.js'
-	},
+	// output: {
+	// 	publicPath: paths.appOutput,
+	// 	path: paths.appOutput,
+	// 	filename: 'bundle.js'
+	// },
 	// externals: [nodeExternals()],
 	resolve: {
 		extensions: ['.js', '.jsx'],

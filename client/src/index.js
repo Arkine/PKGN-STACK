@@ -53,10 +53,7 @@ const renderApp = () => ReactDOM.render((
 );
 
 if (module.hot) {
-	module.hot.accept('./', () =>{
-		console.log('reloading app...')
-		return renderApp();	
-	});
+	module.hot.accept();
 } 
 
 renderApp();

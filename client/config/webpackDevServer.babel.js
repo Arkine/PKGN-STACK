@@ -5,6 +5,7 @@ import dev from './webpack.dev.babel';
 
 export default merge(dev, {
 	devServer: {
+		publicPath: '/',
 		proxy: {
 			"*": "http://localhost:8080"
 		},
