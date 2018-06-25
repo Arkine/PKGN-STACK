@@ -15,10 +15,6 @@ import Routes from './router/routes';
 // History API used for routing
 const history = createHistory();
 
-// const setAuthHeaders = setContext((request, previousContext) => {
-// 	headers: authHeader()
-// });
-
 // Create the client link (should point to Graphql server)
 const client = new ApolloClient({
 	uri: 'http://localhost:8080/graphql',
@@ -29,7 +25,7 @@ const client = new ApolloClient({
 
 		operation.setContext({
 			headers: {
-				'Authorization': 'Bearer ' + token
+				'Authorization': `Bearer ${token}`
 			}
 		})
 	}
@@ -52,8 +48,9 @@ const renderApp = () => ReactDOM.render((
 	document.getElementById('root')
 );
 
+renderApp();
+
 if (module.hot) {
 	module.hot.accept();
 } 
 
-renderApp();

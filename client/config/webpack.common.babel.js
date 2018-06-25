@@ -3,12 +3,9 @@ import path from 'path';
 
 export default {
 	target: 'web',
-	// output: {
-	// 	publicPath: paths.appOutput,
-	// 	path: paths.appOutput,
-	// 	filename: 'bundle.js'
-	// },
-	// externals: [nodeExternals()],
+	output: {
+		path: paths.appOutput	
+	},
 	resolve: {
 		extensions: ['.js', '.jsx'],
 		alias: {

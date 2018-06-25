@@ -9,10 +9,7 @@ export default new GraphQLObjectType({
 	name: 'Auth',
 	description: 'Authentication for a user',
 	fields: {
-		authToken: {
-			type: GraphQLString
-		},
-		refreshToken: {
+		token: {
 			type: GraphQLString
 		},
 		user: {

@@ -10,7 +10,7 @@ export default class HomePage extends React.Component {
 
 		return (
 			<div>
-				<h1>ssasadsd</h1>
+				<h1>xssasadsd</h1>
 
 				{isAuthenticated && 
 					<div>

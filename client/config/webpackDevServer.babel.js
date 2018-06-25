@@ -9,17 +9,12 @@ export default merge(dev, {
 		proxy: {
 			"*": "http://localhost:8080"
 		},
-		// contentBase: paths.appOutput,
-		// contentBase: "http://localhost:8080",
 		port: 3000,
 		historyApiFallback: true,
-		// watchContentBase: true,
 		hot: true,
 		overlay: true,
 		inline: true,
-		// progress: true,
-		// compress: true,
-		// color: true,
-		// noInfo: true
+		compress: true,
+		noInfo: true
 	}
 });

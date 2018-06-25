@@ -3,6 +3,7 @@ import {
 } from 'graphql';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
+import passport from 'koa-passport';
 
 import authType from '../types/authType';
 
@@ -25,33 +26,47 @@ export default {
 			type: GraphQLString
 		}
 	},
-	resolve: async (root, {username, email, password, confirmPassword}, { login, ctx }, info) => {
+	resolve: async (root, {username, email, password, confirmPassword}, { ctx, next }, info) => {
 		if (password !== confirmPassword) {
 			return {
 				error: "Passwords do not match"
 			}
 		}
 
+		console.log('next', info);
+
 		console.log('registering...');
 
-		const user = new User({
-			email,
-			username
-		});
-		// Try to register new user
 		try {
-	
-			await User.register(user, password);
 			
-			// Return a signed token
-			const token = jwt.sign({
-				sub: user._id
-			}, process.env.SECRET);
+			// Try to register new user
+			const user = new User({
+				email,
+				username,
+				password
+			});
+	
+			await passport.authenticate('local-register', {session: false}, (error, user) => {
+				if (error) {
+					return {
+						error
+					}
+				}
+				
+				if (!user) {
+					return {
+						error: {
+							message: 'Error registering user'
+						}
+					}
+				}
 
-			return {
-				token,
-				user
-			}
+				return {
+					user
+				}
+			})(ctx, next);
+			
+
 		} catch(error) {
 			console.log('There was an error:', error);
 			return {

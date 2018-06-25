@@ -1,6 +1,7 @@
 import passport from 'koa-passport';
 import mongoose from 'mongoose';
 import { Strategy as LocalStrategy } from 'passport-local';
+import jwt from 'jsonwebtoken';
 // import { Strategy as JWTStrategy, ExtractJwt as ExtractJWT } from 'passport-jwt';
 
 const User = mongoose.model('User');
@@ -14,7 +15,7 @@ passport.use('local-login', new LocalStrategy(options, async (email, password, d
 	console.log('trying stuff');
 	try {
 		const user = await User.findOne({ email });
-		console.log('User:', user);
+		
 		
 		if (!user) {
 			return done('Incorrect username or password', false);
@@ -24,30 +25,38 @@ passport.use('local-login', new LocalStrategy(options, async (email, password, d
 			return done('Incorrect username or password');
 		}
 
-		const payload = {
-			sub: user._id
-		};
-		const token = jwt.sign(payload, process.env.SECRET);
-		const data  = {
-			user
-		};
+		const token = jwt.sign({
+				sub: user._id,
+				iat: Math.floor(Date.now() / 1000), // Issued at time,
+				exp: Math.floor(Date.now() / 1000) * (60 * 60) // expire in 1 hr
+		}, process.env.SECRET);
 
-		return done(null, user, payload, data);
+		return done(null, user, token);
 	} catch(error) {
 		return done(error);
 	}
 }));
 
-passport.use('local-signup', new LocalStrategy(options, async (email, password, done) => {
+passport.use('local-register', new LocalStrategy(options, async (email, password, done) => {
+	if (!email || !password) {
+		return {
+			error: {
+				message: 'Please provide valid credentials'
+			}
+		}
+	}
+
 	try {
 		const user = new User({
 			email,
 			password
 		});
 
-		await new user.save();
+		const newUser = await new user.save();
 
-		return done(null, user);
+		console.log('got bnew user', newUser);
+
+		return done(null, newUser);
 	} catch(error) {
 		return done(error);
 	}

@@ -31,7 +31,6 @@ class RegisterForm extends React.Component {
 				this.setState({
 					error: error.message
 				});
-				return false;
 			}
 
 			if (user) {				

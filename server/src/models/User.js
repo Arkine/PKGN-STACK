@@ -1,9 +1,8 @@
 import mongoose, { Schema } from 'mongoose';
 import passport from 'koa-passport';
-import passportLocalMongoose from 'passport-local-mongoose';
 import mongodbErrorHandler from 'mongoose-mongodb-errors';
 import validator from 'validator';
-
+import bcrypt from 'bcrypt';
 
 const UserSchema = new Schema({
 	username: String,
@@ -21,15 +20,44 @@ const UserSchema = new Schema({
 	}
 });
 
-// Adds our methods for validation to simplify it
-UserSchema.plugin(passportLocalMongoose, {
-	usernameField: 'email',
-	errorMessages: {
-		UserExistsError: 'That Email Already Exists'
-	}
-});
-
 // Converts MongoDB error messages to prevent revealing sensitive data  
 UserSchema.plugin(mongodbErrorHandler);
+
+UserSchema.methods.comparePassword = function (password, callback) {
+	bcrypt.compare(password, this.password, callback);
+}
+
+UserSchema.pre('save', function saveHook(next) {
+	const user =this;
+	if (!user.isModified('password')) {
+		return next();
+	}
+
+	return bcrypt.genSalt((error, salt) => {
+		if (error) {
+			return next(error);
+		}
+
+		return bcrypt.hash(user.password, salt, (hashError, hash) => {
+			if (hashError) {
+				return next(error);
+			}
+
+			user.password = hash;
+
+			return next();
+		});
+	});
+});
+
+UserSchema.post('save', function(error, doc, next) {
+	if (error.name === 'MongoError' && error.code === 11000) {
+		next({
+			message: 'Email has already been registered'
+		});
+	} else {
+		next(error);
+	}
+})
 
 export default mongoose.model('User', UserSchema);

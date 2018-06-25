@@ -6,18 +6,10 @@ import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
 import schema from './api/rootSchema';
 import passport from 'koa-passport';
-// import session from 'koa-session';
-import session from 'koa-session-store';
-import mongoStore from 'koa-session-mongo';
+
 import { graphqlKoa, graphiqlKoa} from 'apollo-server-koa';
 
 import authMiddleware from './services/auth';
-// import jwt from 'koa-jwt';
-
-// import authMiddleware from './services/auth';
-// import bodyParser from 'body-parser';
-// import koaViews from 'koa-views';
-// import mongoose from 'mongoose';
 
 const isDev = process.env.NODE_ENV === 'development' ? true : false;
 
@@ -63,22 +55,6 @@ app.use(cors());
 // Parse req.body into JSON. Might have to move this to Graphql middleware
 app.use(bodyParser());
 
-// app.use((ctx, next) => {
-// 	console.log('request', ctx.request.body);
-// 	next();
-// })
-
-// Set our session keys
-// app.use(session({
-// 	secret: process.env.SECRET,
-// 	resave: false,
-// 	saveUninitialized: false,
-// 	store: mongoStore.create({
-// 		url: process.env.DATABASE
-// 	})
-	
-// }, app));
-
 // Passport authentication
 app.use(passport.initialize());
 import './services/passport';
@@ -93,7 +69,7 @@ const router = new Router();
 // Setup our Graphql server
 router.get(
 	'/graphql',
-	graphqlKoa((ctx, next) => {
+	graphqlKoa((ctx) => {
 		
 		let context = {
 			login: ctx.login.bind(ctx),
@@ -109,10 +85,10 @@ router.get(
 
 router.post(
 	'/graphql',
-	graphqlKoa((ctx, next) => {
-	
+	graphqlKoa((ctx) => {
+
 		let context = {
-			login: ctx.login.bind(ctx),
+
 			user: ctx.state.user,
 			ctx
 		}

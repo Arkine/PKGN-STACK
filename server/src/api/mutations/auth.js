@@ -20,35 +20,35 @@ export default {
 			type: GraphQLString
 		}
 	},
-	resolve: async (root, {email, password}, { login, ctx }, info) => {
+	resolve: async (root, {email, password}, { login, ctx, next }, info) => {
 		console.log('authenticating...');
-		try {
-			// Check if the user passes authentication
-			const resp = await User.authenticate()(email, password);
-			const { user, error } = resp;
-
-			if (error) {
-				return {
-					error
+		
+		if (!email || !password) {
+			return {
+				error: {
+					message: 'Please enter an email or password'
 				}
 			}
-			
-			// Sign the token with the user ID
-			const authToken = jwt.sign({
-				sub: user._id,
-				iat: Math.floor(Date.now() / 1000), // Issued at time,
-				exp: Math.floor(Date.now() / 1000) * (60 * 60) // expire in 1 hr
-			}, process.env.SECRET);
+		}
 
-			// Log the user in
-			login(user);
+		try {
+			// Check if the user passes authentication
+			await passport.authenticate('local-login', (error, user, token) => {
+				if (error) {
+					return {
+						error
+					}
+				}
+
+				return {
+					token,
+					user
+				}
 			
-			return {
-				authToken,
-				user,
-				error
-			}
-			
+
+			})(ctx, next);
+		
+
 		} catch (error) {
 			console.log('error at auth mutation:', error);
 
