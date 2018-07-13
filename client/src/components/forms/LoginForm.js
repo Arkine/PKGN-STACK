@@ -14,7 +14,7 @@ class LoginForm extends React.Component {
 
 	submitForm = async (e) => {
 		e.preventDefault();
-
+		console.log('Submitting form')
 		try {
 			const resp = await this.props.LoginQuery({
 				variables: {
@@ -23,17 +23,20 @@ class LoginForm extends React.Component {
 				}
 			});
 
-			const { user, authToken } = resp.data.auth;
-
+			const { user, authToken, refreshToken } = resp.data.auth;
+			console.log('user', user);
 			if (user) {
 				// store the returned token in local Storage
 				Auth.authenticateUser(authToken);
-				
+
+				localStorage.setItem('pegn-auth', JSON.stringify(authToken));
+				localStorage.setItem('pegn-refresh', JSON.stringify(refreshToken));
+
 				// Redirect to home page
 				this.props.history.push('/');
 			}
 
-			
+
 		} catch(error) {
 			console.log(error.graphQLErrors);
 			this.setState({error: error.graphQLErrors[0].message});
@@ -43,7 +46,7 @@ class LoginForm extends React.Component {
 	render() {
 		return (
 			<div>
-				{this.state.error && 
+				{this.state.error &&
 					<span className="error">{this.state.error}</span>
 				}
 				<form onSubmit={this.submitForm.bind(this)}>

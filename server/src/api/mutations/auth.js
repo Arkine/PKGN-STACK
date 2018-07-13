@@ -31,23 +31,42 @@ export default {
 					error
 				}
 			}
-			
-			// Sign the token with the user ID
-			const authToken = jwt.sign({
-				sub: user._id,
-				iat: Math.floor(Date.now() / 1000), // Issued at time,
-				exp: Math.floor(Date.now() / 1000) * (60 * 60) // expire in 1 hr
-			}, process.env.SECRET);
 
-			// Log the user in
-			login(user);
-			
+			const authPayload = {
+				sub: {
+					user: {
+						_id: user._id,
+						email: user.email,
+					}
+				},
+				iat: Math.floor(Date.now() / 1000), // Issued at time,
+			};
+
+			// Sign the token with the user ID
+			const authToken = jwt.sign(authPayload, process.env.SECRET, {
+				expiresIn: '5s',
+			});
+
+			const refreshPayload = {
+				sub: {
+					user: {
+						_id: user._id,
+						email: user.email,
+					}
+				},
+				iat: Math.floor(Date.now() / 1000), // Issued at time,
+			}
+
+			const refreshToken = jwt.sign(refreshPayload, process.env.SECRET, {
+				expiresIn: '2h',
+			});
+
 			return {
 				authToken,
-				user,
-				error
+				refreshToken,
+				user
 			}
-			
+
 		} catch (error) {
 			console.log('error at auth mutation:', error);
 

@@ -7,33 +7,56 @@ const User = mongoose.model('User');
 
 const options = {
 	usernameField: 'email',
-	passwordField: 'password'
+	passwordField: 'password',
 };
 
 // Strategy used when a user logs in
 passport.use('local-login', new LocalStrategy(options, async (email, password, done) => {
 	try {
 		const user = await User.findOne({ email });
-		
+
 		if (!user) {
 			return done('Incorrect username or password', false);
 		}
-		
+
 		if (password !== user.password) {
 			return done('Incorrect username or password');
 		}
 
-		const payload = {
-			sub: user._id,
-			exp: Math.floor(Date.now() * 1000) * (60 * 60) // 1 hr
+		const authPayload = {
+			sub: {
+				user: {
+					id: user._id,
+				},
+			}
 		};
-		
-		const token = jwt.sign(payload, process.env.SECRET);
-		const data  = {
-			user
+		const authToken = jwt.sign(authPayload, process.env.SECRET, {
+			expiresIn: '5s',
+		});
+
+		const newToken = User.generateToken();
+
+		const refreshPayload = {
+			tid: newToken,
+			sub: {
+				user: {
+					id: user._id,
+					role: user.perms.role,
+				},
+			},
 		};
 
-		return done(null, user, payload, data);
+		const refreshToken = jwt.sign(refreshPayload, process.env.SECRET, {
+			expiresIn: '2h',
+		});
+
+		const data  = {
+			user,
+			authToken,
+			refreshToken,
+		};
+
+		return done(null, user, data);
 	} catch(error) {
 		return done(error);
 	}

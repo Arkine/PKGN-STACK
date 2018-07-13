@@ -3,9 +3,7 @@ import path from 'path';
 
 export default {
 	target: 'web',
-	output: {
-		path: paths.appOutput,
-	},
+
 	resolve: {
 		extensions: ['.js', '.jsx'],
 		alias: {

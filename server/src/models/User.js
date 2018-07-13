@@ -29,6 +29,11 @@ UserSchema.plugin(passportLocalMongoose, {
 	}
 });
 
+UserSchema.statics.generateToken = function() {
+	return crypto.randomBytes(20).toString('hex');
+};
+
+
 UserSchema.pre('save', function encryptPassword(next) {
 	const user = this;
 	// proceed further only if the password is modified or the user is new

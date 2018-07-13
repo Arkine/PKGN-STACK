@@ -14,12 +14,13 @@ export default (ctx, next) => {
 
 	// Verify that the token was signed by this domain
 	return jwt.verify(token, process.env.SECRET, async (err, payload) => {
+
 		if (err) {
 			return next(err);
 		}
 
 		// Attach the user to the request body
-		const userId = payload.sub;
+		const userId = payload.sub.user._id;
 		try {
 			const newUser = await User.findById(userId);
 
