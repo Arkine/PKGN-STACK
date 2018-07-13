@@ -4,9 +4,9 @@ import path from 'path';
 export default {
 	target: 'web',
 	output: {
-		publicPath: paths.appOutput,
+		// publicPath: paths.appOutput,
 		path: paths.appOutput,
-		filename: 'bundle.js'
+		// filename: 'bundle.js'
 	},
 	resolve: {
 		extensions: ['.js', '.jsx'],
