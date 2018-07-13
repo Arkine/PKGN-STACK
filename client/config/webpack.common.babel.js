@@ -4,9 +4,7 @@ import path from 'path';
 export default {
 	target: 'web',
 	output: {
-		// publicPath: paths.appOutput,
 		path: paths.appOutput,
-		// filename: 'bundle.js'
 	},
 	resolve: {
 		extensions: ['.js', '.jsx'],
@@ -14,7 +12,7 @@ export default {
 			app: paths.appSrc,
 			'react': 'preact-compat',
 			'react-dom': 'preact-compat'
-		},	
+		},
 	},
 
 	module: {
@@ -39,7 +37,7 @@ export default {
 			// Our babel loader for our es6 files
 			{
 				test: /\.(js|jsx)$/,
-				exclude: /node_modules/, 
+				exclude: /node_modules/,
 				include: [
 					paths.appSrc,
 					// Allows us to use react tools and syntax with preact

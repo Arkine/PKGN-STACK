@@ -12,8 +12,6 @@ process.env.BABEL_ENV = 'development';
 export default merge(common, {
 	mode: 'development',
 	entry: [
-		require.resolve('webpack/hot/dev-server'),
-		'webpack-dev-server/client?http://localhost:3000/',
 		paths.appIndexJs
 	],
 	devtool: 'cheap-module-source-map',

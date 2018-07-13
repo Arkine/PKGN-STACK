@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import ApolloClient from 'apollo-boost';
@@ -20,9 +20,9 @@ const client = new ApolloClient({
 	uri: 'http://localhost:8080/graphql',
 	// Set the Auth token on every request
 	request: async (operation) => {
-		
+
 		const token = await localStorage.getItem('app-authToken');
-	
+
 		operation.setContext({
 			headers: {
 				'Authorization': 'Bearer ' + token
@@ -35,7 +35,7 @@ const client = new ApolloClient({
 const childProps = {
 	isAuthenticated: Auth.isUserAuthenticated
 }
- 
+
 const renderApp = () => ReactDOM.render((
 		<ApolloProvider client={client}>
 			<BrowserRouter>
@@ -44,15 +44,15 @@ const renderApp = () => ReactDOM.render((
 				</App>
 			</BrowserRouter>
 		</ApolloProvider>
-	), 
+	),
 	document.getElementById('root')
 );
 
 if (module.hot) {
 	module.hot.accept('./', () =>{
 		console.log('reloading app...')
-		return renderApp();	
+		return renderApp();
 	});
-} 
+}
 
 renderApp();
