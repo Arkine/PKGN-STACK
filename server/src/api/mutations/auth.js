@@ -3,7 +3,6 @@ import {
 } from 'graphql';
 
 import authType from '../types/authType';
-import passport from 'koa-passport';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 

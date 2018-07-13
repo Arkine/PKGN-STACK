@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import passport from 'koa-passport';
+import bcrypt from 'bcrypt';
 import passportLocalMongoose from 'passport-local-mongoose';
 import mongodbErrorHandler from 'mongoose-mongodb-errors';
 import validator from 'validator';
@@ -14,7 +14,7 @@ const UserSchema = new Schema({
 		trim: true,
 		validate: {
 			isAsync: true,
-			validator: (email, cb) => 
+			validator: (email, cb) =>
 				cb(validator.isEmail(email), `${email} is not a valid email address`)
 		},
 		required: 'Please Supply an email address'
@@ -29,7 +29,24 @@ UserSchema.plugin(passportLocalMongoose, {
 	}
 });
 
-// Converts MongoDB error messages to prevent revealing sensitive data  
+UserSchema.pre('save', function encryptPassword(next) {
+	const user = this;
+	// proceed further only if the password is modified or the user is new
+	if (!user.isModified('password')) return next();
+	// generate salt
+	return bcrypt.genSalt((saltError, salt) => {
+		if (saltError) return next(saltError);
+
+		return bcrypt.hash(user.password, salt, (hashError, hash) => {
+			if (hashError) return next(hashError);
+			user.password = hash; // replace a password string with hash value
+			return next();
+		});
+	});
+});
+
+
+// Converts MongoDB error messages to prevent revealing sensitive data
 UserSchema.plugin(mongodbErrorHandler);
 
 export default mongoose.model('User', UserSchema);
