@@ -19,20 +19,21 @@ export default class PrimaryNavigation extends React.Component {
 			<nav className="PrimaryNavigation">
 				<div className="PrimaryNavigation__links">
 					<Link to="/">Home</Link>
-					
-					{!isAuthenticated && 
+
+					{!isAuthenticated &&
 						<React.ReactFragment>
-						<Link to="/login">Login</Link>
-						<Link to="/register">Register</Link>
+							<Link to="/login">Login</Link>
+							<Link to="/register">Register</Link>
 						</React.ReactFragment>
 					}
 
 					{isAuthenticated &&
 						<React.ReactFragment>
-						<Link to='/logout'>Logout</Link>
+							<Link to='/users'>Users</Link>
+							<Link to='/logout'>Logout</Link>
 						</React.ReactFragment>
 					}
-					
+
 				</div>
 			</nav>
 		);

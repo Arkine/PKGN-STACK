@@ -18,19 +18,15 @@ export default merge(common, {
 	],
 	devtool: 'cheap-module-source-map',
 	plugins: [
-		// Cleans out the public folder before a new build
-		new CleanWebpackPlugin(),
 		// Creates the index.html file
 		new HtmlWebpackPlugin({
 			template: paths.appHtml,
-			alwaysWriteToDisk: false
 		}),
 		// Emits a index.html on rebuild
-		new HtmlWebpackHarddiskPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new webpack.NamedModulesPlugin(),
 		// Enable Hot module reloading
 		new webpack.HotModuleReplacementPlugin(),
-		
+
 	]
 });
