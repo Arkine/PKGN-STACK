@@ -31,8 +31,8 @@ UserSchema.plugin(passportLocalMongoose, {
 	}
 });
 
-UserSchema.statics.generateToken = function() {
-	return crypto.randomBytes(20).toString('hex');
+UserSchema.statics.generateToken = async function() {
+	return await crypto.randomBytes(20).toString('hex');
 };
 
 
