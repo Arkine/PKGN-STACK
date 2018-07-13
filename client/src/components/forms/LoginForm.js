@@ -27,7 +27,7 @@ class LoginForm extends React.Component {
 			console.log('user', user);
 			if (user) {
 				// store the returned token in local Storage
-				Auth.authenticateUser(authToken);
+				// Auth.authenticateUser(authToken);
 
 				localStorage.setItem('pegn-auth', JSON.stringify(authToken));
 				localStorage.setItem('pegn-refresh', JSON.stringify(refreshToken));

@@ -15,7 +15,7 @@ class Auth {
    * @returns {boolean}
    */
   static isUserAuthenticated() {
-    return localStorage.getItem('app-authToken') !== null;
+    return localStorage.getItem('pegn-auth') !== null;
   }
 
   /**
@@ -23,7 +23,7 @@ class Auth {
    *
    */
   static deauthenticateUser() {
-    localStorage.removeItem('app-authToken');
+    localStorage.removeItem('pegn-auth');
   }
 
   /**
@@ -33,7 +33,7 @@ class Auth {
    */
 
   static getToken() {
-    return localStorage.getItem('app-authToken');
+    return localStorage.getItem('pegn-auth');
   }
 
 }
