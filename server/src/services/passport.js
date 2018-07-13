@@ -36,14 +36,12 @@ passport.use('local-login', new LocalStrategy(options, async (email, password, d
 
 		const newToken = User.generateToken();
 
+		user.refreshToken = newToken;
+
+		await user.save();
+
 		const refreshPayload = {
 			tid: newToken,
-			sub: {
-				user: {
-					id: user._id,
-					role: user.perms.role,
-				},
-			},
 		};
 
 		const refreshToken = jwt.sign(refreshPayload, process.env.SECRET, {

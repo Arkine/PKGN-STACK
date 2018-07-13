@@ -3,10 +3,12 @@ import bcrypt from 'bcrypt';
 import passportLocalMongoose from 'passport-local-mongoose';
 import mongodbErrorHandler from 'mongoose-mongodb-errors';
 import validator from 'validator';
+import crypto from 'crypto';
 
 
 const UserSchema = new Schema({
 	username: String,
+	refreshToken: String,
 	email: {
 		type: String,
 		unique: true,

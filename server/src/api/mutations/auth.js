@@ -47,13 +47,14 @@ export default {
 				expiresIn: '5s',
 			});
 
+			const newToken = User.generateToken();
+
+			user.refreshToken = newToken;
+
+			await user.save();
+
 			const refreshPayload = {
-				sub: {
-					user: {
-						_id: user._id,
-						email: user.email,
-					}
-				},
+				tid: newToken,
 				iat: Math.floor(Date.now() / 1000), // Issued at time,
 			}
 
