@@ -5,6 +5,7 @@ export default {
 	target: 'web',
 
 	resolve: {
+		mainFields: ['browser', 'main', 'module'],
 		extensions: ['.js', '.jsx'],
 		alias: {
 			app: paths.appSrc,

@@ -7,7 +7,7 @@ export default merge(dev, {
 		contentBase: paths.appOutput,
 		publicPath: '/',
 		proxy: {
-			"*": "http://localhost:8080"
+			"*": "http://localhost:5000"
 		},
 		port: 3000,
 		historyApiFallback: true,

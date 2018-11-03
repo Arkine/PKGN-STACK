@@ -6,8 +6,6 @@ import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
 import schema from './api/rootSchema';
 import passport from 'koa-passport';
-import session from 'koa-session-store';
-import mongoStore from 'koa-session-mongo';
 import { graphqlKoa, graphiqlKoa} from 'apollo-server-koa';
 
 import authMiddleware from './middleware/auth';
@@ -15,10 +13,6 @@ import logger from './middleware/logger';
 import redirectHandler from './middleware/redirectHandler';
 
 const isDev = process.env.NODE_ENV === 'development' ? true : false;
-
-console.log('isDev: ', isDev);
-
-console.log('Starting server...');
 
 const app = new Koa();
 

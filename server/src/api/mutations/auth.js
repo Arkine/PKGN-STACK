@@ -47,7 +47,7 @@ export default {
 				expiresIn: '5s',
 			});
 
-			const newToken = User.generateToken();
+			const newToken = await User.generateToken();
 
 			user.refreshToken = newToken;
 
