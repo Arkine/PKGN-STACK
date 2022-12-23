@@ -14,7 +14,7 @@
     "dotenv": "^5.0.1",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
-    "jsonwebtoken": "^8.2.2",
+    "jsonwebtoken": "^9.0.0",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.1",
     "koa-cors": "^0.0.16",
